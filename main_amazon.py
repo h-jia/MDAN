@@ -13,7 +13,7 @@ from model import MDANet
 from utils import get_logger
 from utils import data_loader
 from utils import multi_data_loader
-
+from pdb import set_trace
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--name", help="Name used to save the log file.", type=str, default="amazon")
@@ -50,6 +50,7 @@ amazon_xx = amazon_xx[:, :args.dimension]
 amazon_yy = amazon['yy']
 amazon_yy = (amazon_yy + 1) / 2
 amazon_offset = amazon['offset'].flatten()
+
 time_end = time.time()
 logger.info("Time used to process the Amazon data set = {} seconds.".format(time_end - time_start))
 logger.info("Number of training instances = {}, number of features = {}."
@@ -57,10 +58,12 @@ logger.info("Number of training instances = {}, number of features = {}."
 logger.info("Number of nonzero elements = {}".format(amazon_xx.nnz))
 logger.info("amazon_xx shape = {}.".format(amazon_xx.shape))
 logger.info("amazon_yy shape = {}.".format(amazon_yy.shape))
+logger.info("amazon_offset shape = {}.".format(amazon_offset.shape))
 # Partition the data into four categories and for each category partition the data set into training and test set.
 data_name = ["books", "dvd", "electronics", "kitchen"]
 num_data_sets = 4
 data_insts, data_labels, num_insts = [], [], []
+set_trace()
 for i in range(num_data_sets):
     data_insts.append(amazon_xx[amazon_offset[i]: amazon_offset[i+1], :])
     data_labels.append(amazon_yy[amazon_offset[i]: amazon_offset[i+1], :])
