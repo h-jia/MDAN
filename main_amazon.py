@@ -44,12 +44,14 @@ torch.manual_seed(args.seed)
 # Loading the randomly partition the amazon data set.
 time_start = time.time()
 amazon = np.load("./amazon.npz")
+# Step1: A sparse matrix in COOrdinate format
+# Step2: Compressed Sparse Column matrix: compressed via column
 amazon_xx = coo_matrix((amazon['xx_data'], (amazon['xx_col'], amazon['xx_row'])),
                        shape=amazon['xx_shape'][::-1]).tocsc()
 amazon_xx = amazon_xx[:, :args.dimension]
 amazon_yy = amazon['yy']
-amazon_yy = (amazon_yy + 1) / 2
-amazon_offset = amazon['offset'].flatten()
+amazon_yy = (amazon_yy + 1) / 2  # ??? why?
+amazon_offset = amazon['offset'].flatten()  #??? what is this ?
 
 time_end = time.time()
 logger.info("Time used to process the Amazon data set = {} seconds.".format(time_end - time_start))
