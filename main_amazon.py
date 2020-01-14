@@ -44,7 +44,7 @@ torch.manual_seed(args.seed)
 # Loading the randomly partition the amazon data set.
 time_start = time.time()
 amazon = np.load("./amazon.npz")
-# Step1: A sparse matrix in COOrdinate format
+# Step1: A sparse matrix in COOrdinate format: coo_matrix((data, (i, j)), [shape=(M, N)])
 # Step2: Compressed Sparse Column matrix: compressed via column
 amazon_xx = coo_matrix((amazon['xx_data'], (amazon['xx_col'], amazon['xx_row'])),
                        shape=amazon['xx_shape'][::-1]).tocsc()
@@ -65,7 +65,6 @@ logger.info("amazon_offset shape = {}.".format(amazon_offset.shape))
 data_name = ["books", "dvd", "electronics", "kitchen"]
 num_data_sets = 4
 data_insts, data_labels, num_insts = [], [], []
-set_trace()
 for i in range(num_data_sets):
     data_insts.append(amazon_xx[amazon_offset[i]: amazon_offset[i+1], :])
     data_labels.append(amazon_yy[amazon_offset[i]: amazon_offset[i+1], :])
@@ -92,6 +91,9 @@ input_dim = amazon_xx.shape[1]
 results = {}
 logger.info("Training fraction = {}, number of actual training data instances = {}".format(args.frac, num_trains))
 logger.info("-" * 100)
+
+set_trace()
+
 
 if args.model == "mdan":
     configs = {"input_dim": input_dim, "hidden_layers": [1000, 500, 100], "num_classes": 2,
